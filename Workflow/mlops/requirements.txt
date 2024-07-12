@@ -3,10 +3,10 @@ fastparquet
 graphviz
 hyperopt
 jupyter
-mlflow==2.12.1
+mlflow==2.14.2
 pandas
-scikit-learn
+scikit-learn==1.5.1
 seaborn
 shap
 xgboost
-polars
+polars==1.1.0

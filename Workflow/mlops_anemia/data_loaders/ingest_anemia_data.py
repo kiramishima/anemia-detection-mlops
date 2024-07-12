@@ -1,3 +1,5 @@
+import polars as pl
+
 if 'data_loader' not in globals():
     from mage_ai.data_preparation.decorators import data_loader
 if 'test' not in globals():
@@ -6,20 +8,13 @@ if 'test' not in globals():
 
 @data_loader
 def load_data(*args, **kwargs):
-    """
-    Template code for loading data from any source.
+    URL = 'https://raw.githubusercontent.com/kiramishima/anemia-detection-mlops/master/DATA/anemia_dataset.csv'
+    df = pl.read_csv(URL, truncate_ragged_lines=True)
 
-    Returns:
-        Anything (e.g. data frame, dictionary, array, int, str, etc.)
-    """
-    # Specify your data loading logic here
-
-    return {}
+    return df
 
 
 @test
 def test_output(output, *args) -> None:
-    """
-    Template code for testing the output of the block.
-    """
     assert output is not None, 'The output is undefined'
+    assert len(output.columns) != 0, "Error loading data or the csv doesn't contain data"

@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+boto3 = "*"
+pandas = "*"
+polars = "1.1.0"
+jupyter = "*"
+hyperopt = "*"
+fastparquet = "*"
+pyarrow = "*"
+graphviz = "*"
+mlflow = "2.14.2"
+scikit-learn = "1.5.1"
+shap = "*"
+xgboost = "*"
+psycopg2-binary = "*"
+dask = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
+python_full_version = "3.12.2"
