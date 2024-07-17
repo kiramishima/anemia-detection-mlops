@@ -8,6 +8,7 @@ if 'test' not in globals():
 
 @data_loader
 def load_data(*args, **kwargs):
+    print(pl.__version__)
     URL = 'https://raw.githubusercontent.com/kiramishima/anemia-detection-mlops/master/DATA/anemia_dataset.csv'
     df = pl.read_csv(URL, truncate_ragged_lines=True)
 

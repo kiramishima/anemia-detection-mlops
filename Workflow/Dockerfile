@@ -1,4 +1,4 @@
-FROM mageai/mageai:beta
+FROM mageai/mageai:latest
 
 ARG PROJECT_NAME=mlops
 ARG MAGE_CODE_PATH=/home/src
@@ -12,13 +12,13 @@ ENV USER_CODE_PATH=${USER_CODE_PATH}
 
 ENV MAGE_DATABASE_CONNECTION_URL=postgresql+psycopg2://postgres:password@magic-database:5432/mlops
 
+RUN pip3 install -r ${USER_CODE_PATH}/requirements.txt
 # Install custom Python libraries and dependencies for your project.
 RUN pip3 install -U pip & pip install pipenv
 
 COPY [ "Pipfile", "Pipfile.lock", "./" ]
 
 RUN pipenv install --system --deploy
-RUN pip3 install -r ${USER_CODE_PATH}/requirements.txt
 
 ENV PYTHONPATH="${PYTHONPATH}:${MAGE_CODE_PATH}/${PROJECT_NAME}"
 

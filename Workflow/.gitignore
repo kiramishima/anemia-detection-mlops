@@ -20,3 +20,8 @@ secrets/
 terraform.tfstate
 terraform.tfstate.backup
 titanic_clean.csv
+workspace/
+workspace
+models/
+mlartifacts/
+/**/*/__init__.py
