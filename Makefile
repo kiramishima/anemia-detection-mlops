@@ -1,5 +1,5 @@
 default:
 	echo "hi"
 
-run:
-	echo "Hello"
+build_lambda:
+	./scripts/build_lambda_container.sh

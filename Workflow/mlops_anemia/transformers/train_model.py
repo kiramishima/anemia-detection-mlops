@@ -43,11 +43,11 @@ def transform(data, *args, **kwargs):
     # Predict
     y_pred = model.predict(X_test)
     rmse = root_mean_squared_error(Y_test, y_pred)
-    print(f'RMSE: {rmse}')
+    # print(f'RMSE: {rmse}')
     #    mlflow.log_metric("rmse", rmse)
     # Model Score
     model_score = model.score(X_test, Y_test)
-    print(f'Score: {model_score}')
+    # print(f'Score: {model_score}')
     #    mlflow.log_metric("score", model_score)
 
     return X_train, X_test, Y_train, Y_test, le, model

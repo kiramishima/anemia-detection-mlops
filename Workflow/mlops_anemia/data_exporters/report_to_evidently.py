@@ -17,9 +17,9 @@ if 'data_exporter' not in globals():
     from mage_ai.data_preparation.decorators import data_exporter
 
 
-WS_NAME = os.environ.get('EVIDENTLY_HOST', 'http://localhost:8000')
-TRACKING_URI = "http://localhost:5000"
-EXPERIMENT_NAME = 'LR-Anemia-model'
+EVIDENTLY_HOST = os.environ.get('EVIDENTLY_HOST', 'http://localhost:8000')
+TRACKING_URI = os.environ.get("TRACKING_URI", "http://localhost:5000")
+EXPERIMENT_NAME = os.environ.get("EXPERIMENT_NAME", "LR-Anemia-model")
 
 @data_exporter
 def export_data(data, *args, **kwargs):
@@ -54,12 +54,12 @@ def export_data(data, *args, **kwargs):
     
     # print(X_test, Y_test)
     # Evaluate
-    pred = loaded_model.predict(X_train)
+    pred = loaded_model.predict(X_train.to_pandas())
     df_train = X_train.with_columns(
         Anaemic=pl.lit(Y_train.get_column('Anaemic').to_list()),
         Pred_Anaemic=pl.lit(pred)
     )
-    pred = loaded_model.predict(X_test)
+    pred = loaded_model.predict(X_test.to_pandas())
     df_test = X_test.with_columns(
         Anaemic=pl.lit(Y_test.get_column('Anaemic').to_list()),
         Pred_Anaemic=pl.lit(pred)
@@ -87,18 +87,20 @@ def export_data(data, *args, **kwargs):
     )
     
     # create a workspace
-    ws = RemoteWorkspace("http://localhost:8000")
-    print()
+    ws = RemoteWorkspace(EVIDENTLY_HOST)
+    # print(ws)
     # print(df_train.to_pandas())
 
     # Reporting
     project = None
-    if ws.search_project("Anemia Data Quality Project") is None:
+    projects = ws.search_project("Anemia Data Quality Project")
+    print(projects)
+    if len(projects) > 0:
+        project = projects[0]
+    else:
         project = ws.create_project("Anemia Data Quality Project")
         project.description = "Anemia data monitoring"
         project.save()
-    else:
-        project = ws.search_project("Anemia Data Quality Project")[0]
     
     report.run(reference_data=df_train.to_pandas(),
                     current_data=df_test.to_pandas(),

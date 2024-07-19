@@ -52,6 +52,8 @@ services:
       - SERVICES=s3
     networks:
       - app-network
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./s3}:/var/lib/localstack"
 networks:
   app-network:
     driver: bridge

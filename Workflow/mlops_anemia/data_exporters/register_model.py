@@ -2,14 +2,15 @@ import mlflow
 import os
 import pickle
 from mlflow.tracking import MlflowClient
+from mlflow.models import infer_signature
 from sklearn.metrics import root_mean_squared_error
 
 if 'data_exporter' not in globals():
     from mage_ai.data_preparation.decorators import data_exporter
 
 
-TRACKING_URI = "http://localhost:5000"
-EXPERIMENT_NAME = 'LR-Anemia-model'
+TRACKING_URI = os.environ.get("TRACKING_URI", "http://localhost:5000")
+EXPERIMENT_NAME = os.environ.get("EXPERIMENT_NAME", "LR-Anemia-model")
 
 mlflow.set_tracking_uri(TRACKING_URI)
 mlflow.set_experiment(EXPERIMENT_NAME)
@@ -52,13 +53,15 @@ def export_data(data, *args, **kwargs) -> str:
             pickle.dump(Y_test, f_out)
 
         mlflow.log_artifact("models/y_test.pkl", artifact_path="preprocessor")
-
+        signature = infer_signature(X_test.to_pandas(), model.predict(X_test.to_pandas()))
         # Log Model
-        mlflow.sklearn.log_model(
+        model_info = mlflow.sklearn.log_model(
             sk_model=model, 
             artifact_path="models",
             registered_model_name="log-reg-anemia-model",
+            signature=signature
         )
+        
         artifact_uri = mlflow.get_artifact_uri()
         run_id = run.info.run_id
         print(f"default artifact URI: '{artifact_uri}'")

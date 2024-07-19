@@ -10,12 +10,12 @@ blocks:
   language: python
   name: ingest_anemia_data
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: data_loader
   upstream_blocks: []
   uuid: ingest_anemia_data
-- all_upstream_blocks_executed: true
+- all_upstream_blocks_executed: false
   color: null
   configuration: {}
   downstream_blocks:
@@ -32,7 +32,7 @@ blocks:
   upstream_blocks:
   - ingest_anemia_data
   uuid: transform_anemia_data
-- all_upstream_blocks_executed: true
+- all_upstream_blocks_executed: false
   color: null
   configuration: {}
   downstream_blocks:
@@ -43,13 +43,13 @@ blocks:
   language: python
   name: train_model
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: transformer
   upstream_blocks:
   - transform_anemia_data
   uuid: train_model
-- all_upstream_blocks_executed: true
+- all_upstream_blocks_executed: false
   color: null
   configuration: {}
   downstream_blocks: []
@@ -59,13 +59,13 @@ blocks:
   language: python
   name: report_to_evidently
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: data_exporter
   upstream_blocks:
   - register_model
   uuid: report_to_evidently
-- all_upstream_blocks_executed: true
+- all_upstream_blocks_executed: false
   color: null
   configuration: {}
   downstream_blocks:
@@ -76,7 +76,7 @@ blocks:
   language: python
   name: register_model
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: data_exporter
   upstream_blocks:
@@ -104,8 +104,6 @@ spark_config: {}
 tags: []
 type: python
 uuid: anemia_pipelines
-variables:
-  EXPERIMENT_NAME: LR-Anemia-Model
-  TRACKING_URI: http://127.0.0.1:5000
+variables: {}
 variables_dir: /home/kiramishima/.mage_data/mlops_anemia
 widgets: []

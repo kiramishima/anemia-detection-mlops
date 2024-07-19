@@ -25,3 +25,4 @@ workspace
 models/
 mlartifacts/
 /**/*/__init__.py
+s3/

@@ -3,5 +3,4 @@ model:
   object_uuid: anemia_pipelines
   repo_path: /mnt/d/Workspace/ws_python/anemia-detection-mlops/Workflow/mlops_anemia
   settings:
-    train_model: {}
-    transform_anemia_data: {}
+    report_to_evidently: {}
