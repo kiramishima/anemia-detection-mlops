@@ -33,9 +33,11 @@ services:
     networks:
       - app-network
   mlflow:
+    env_file:
+      - .env.dev
     build:
       context: .
-      dockerfile: mlflow.dockerfile
+      dockerfile: mlflow.Dockerfile
     ports:
       - 5000:5000
     volumes:
@@ -44,6 +46,30 @@ services:
       - app-network
     depends_on:
       - magic-database
+      - s3
+  monitoring:
+    env_file:
+      - .env.dev
+    build:
+      context: .
+      dockerfile: evidently.Dockerfile
+    ports:
+      - 8000:8000
+    networks:
+      - app-network
+    depends_on:
+      - s3
+  lambda:
+    build:
+      context: ../lambdas
+      dockerfile: Dockerfile
+    ports:
+      - 9000:9000
+    networks:
+      - app-network
+    depends_on:
+      - s3
+      - mlflow
   s3:
     image: localstack/localstack:s3-latest
     ports:

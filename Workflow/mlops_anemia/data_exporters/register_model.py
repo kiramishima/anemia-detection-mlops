@@ -1,6 +1,7 @@
 import mlflow
 import os
 import pickle
+import boto3
 from mlflow.tracking import MlflowClient
 from mlflow.models import infer_signature
 from sklearn.metrics import root_mean_squared_error
@@ -78,6 +79,17 @@ def export_data(data, *args, **kwargs) -> str:
     # client = MlflowClient(TRACKING_URI)
     logged_model = f"runs:/{run_id}/models"
     mlflow.register_model(logged_model, f"{EXPERIMENT_NAME}")
+
+    # Update AWS Lambda - Uncomment this if you want automtize this
+    # client = boto3.client('lambda')
+    # client.update_function_configuration(
+    #     FunctionName='anemia-mlops-anemia-service',
+    #     Environment={
+    #         'Variables': {
+    #             'RUN_ID': run_id
+    #         }
+    #     }
+    # )
     return logged_model, artifact_uri, run_id
 
 

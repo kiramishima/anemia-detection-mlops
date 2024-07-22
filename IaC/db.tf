@@ -52,9 +52,9 @@ resource "aws_db_instance" "rds" {
   engine_version         = "16.3"
   instance_class         = "db.t3.micro"
   multi_az               = false
-  db_name                = "mage"
-  username               = var.database_user     // export TF_VAR_database_username="..."
-  password               = var.database_password // export TF_VAR_database_password="..."
+  db_name                = "mlops"
+  username               = var.DB_USER     // export TF_VAR_DB_USER="..."
+  password               = var.DB_PASSWORD // export TF_VAR_DB_PASSWORD="..."
   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.id
   vpc_security_group_ids = ["${aws_security_group.rds_sg.id}"]
   skip_final_snapshot    = true
@@ -62,5 +62,18 @@ resource "aws_db_instance" "rds" {
 
   tags = {
     Environment = var.app_environment
+  }
+}
+
+resource "null_resource" "db_setup" {
+  # runs after database and security group providing external access is created
+  depends_on = [aws_db_instance.rds, aws_security_group.rds_sg]
+
+  provisioner "local-exec" {
+    command = "psql -h \"${aws_db_instance.rds.address}\" -u \"${var.DB_USER}\" -p \"${var.DB_PASSWORD}\" -d \"${aws_db_instance.rds.db_name}\" -f init-db.sql"
+    environment = {
+      # for instance, postgres would need the password here:
+      PGPASSWORD = "${var.DB_PASSWORD}"
+    }
   }
 }

@@ -16,6 +16,7 @@ create_db_if_not_exists() {
 
 # Attempt to create the main application database.
 create_db_if_not_exists "$POSTGRES_DB"
+create_db_if_not_exists "$EXPERIMENTS_DB"
 
 # Attempt to create the 'experiments' database.
 # create_db_if_not_exists "$EXPERIMENTS_DB"

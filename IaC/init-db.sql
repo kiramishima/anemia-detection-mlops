@@ -1,0 +1,2 @@
+CREATE DATABASE mage;
+CREATE DATABASE mlflow;
